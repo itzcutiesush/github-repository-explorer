@@ -37,7 +37,12 @@ export const UserInfoCard = ({
         </div>
       </div>
       <div className={styles.expandIcon}>
-        <i aria-hidden="true">{isExpanded ? "\u2B9D" : "\u2B9F"}</i>
+        <span
+          className={`${styles.arrow} ${
+            isExpanded ? styles.arrowUp : styles.arrowDown
+          }`}
+          aria-hidden="true"
+        />
       </div>
     </div>
   );
