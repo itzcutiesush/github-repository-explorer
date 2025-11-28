@@ -15,28 +15,30 @@ export const UserInfoCard = ({
 }: UserInfoCardProps) => {
   return (
     <div className={styles.card} onClick={onClick}>
-      <Image
-        src={user.avatar_url}
-        alt={user.login}
-        width={40}
-        height={40}
-        className={styles.avatar}
-      />
-      <div className={styles.userInfo}>
-        <h2>
-          <a
-            href={user.html_url}
-            target="_blank"
-            className={styles.username}
-            onClick={(e) => e.stopPropagation()}
-          >
-            {user.name || user.login}
-          </a>
-        </h2>
+      <div className={styles.cardInfo}>
+        <Image
+          src={user.avatar_url}
+          alt={user.login}
+          width={40}
+          height={40}
+          className={styles.avatar}
+        />
+        <div className={styles.info}>
+          <h2 className={styles.title}>
+            <a
+              href={user.html_url}
+              target="_blank"
+              className={styles.username}
+              onClick={(e) => e.stopPropagation()}
+            >
+              {user.name || user.login}
+            </a>
+          </h2>
+        </div>
       </div>
-      <span className={styles.expandIcon}>
+      <div className={styles.expandIcon}>
         <i aria-hidden="true">{isExpanded ? "\u2B9D" : "\u2B9F"}</i>
-      </span>
+      </div>
     </div>
   );
 };

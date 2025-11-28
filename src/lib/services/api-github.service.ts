@@ -39,7 +39,13 @@ class ApiGithubService {
       throw new ApiGithubErrorService("Search query (q) is required");
     }
 
-    const queryParams = new URLSearchParams({ q: params.q });
+    // To get all users containing the search query in the username (or login), add +in:login
+    const searchQuery = `${encodeURIComponent(params.q.trim())}+in:login`;
+
+    // To get user matching exactly the search query in the username (or login), add user: prefix
+    // const searchQuery = `user:${encodeURIComponent(params.q.trim())}`;
+
+    const queryParams = new URLSearchParams();
     if (params.sort) queryParams.append("sort", params.sort);
     if (params.order) queryParams.append("order", params.order);
     if (params.per_page) {
@@ -47,9 +53,10 @@ class ApiGithubService {
     }
     if (params.page) queryParams.append("page", params.page.toString());
 
-    const url = `${GITHUB_API_BASE_URL}${
-      API_URL.user
-    }?${queryParams.toString()}`;
+    const baseUrl = `${GITHUB_API_BASE_URL}${API_URL.user}?q=${searchQuery}`;
+    const additionalParams = queryParams.toString();
+    const url = additionalParams ? `${baseUrl}&${additionalParams}` : baseUrl;
+
     return this.fetchGitHub<UserSearchResponse>(url);
   }
 

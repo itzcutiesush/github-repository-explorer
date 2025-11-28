@@ -1,8 +1,9 @@
 .card {
   display: flex;
   align-items: center;
-  gap: 1.5rem;
-  padding: 1.5rem;
+  text-align: center;
+  gap: 1rem;
+  padding: 1rem;
   background: color-mix(in srgb, var(--primary) 5%, transparent);
   border: 1px solid color-mix(in srgb, var(--primary) 20%, transparent);
   border-radius: 1rem;
@@ -10,21 +11,18 @@
   transition: transform 0.2s, box-shadow 0.2s;
   cursor: pointer;
 
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-
   &:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px
-      color-mix(in srgb, var(--primary) 20%, transparent);
+    box-shadow: 0 4px 12px color-mix(in srgb, var(--primary) 20%, transparent);
   }
 }
 
-.expandIcon {
-  font-size: 1.2rem;
-  color: var(--primary);
-  margin-left: auto;
+.cardInfo {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  flex: 1;
+  min-width: 0;
 }
 
 .avatar {
@@ -35,21 +33,34 @@
   flex-shrink: 0;
 }
 
-.userInfo {
-  flex: 1;
+.info {
+  min-width: 0;
+}
 
-  h2 {
-    font-size: 1.25rem;
-  }
+.title {
+  font-size: 1rem;
+  margin: 0;
+  overflow: hidden;
 }
 
 .username {
   color: var(--foreground);
   transition: color 0.2s;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  display: block;
+  max-width: 100%;
 
   &:hover {
     color: var(--secondary);
   }
+}
+
+.expandIcon {
+  font-size: 1.2rem;
+  color: var(--primary);
+  margin-left: auto;
 }
 
 @keyframes fadeIn {
@@ -65,6 +76,11 @@
 
 @media (min-width: 481px) {
   .card {
-    flex-direction: row;
+    padding: 1.5rem;
+    gap: 1.5rem;
+  }
+
+  .title {
+    font-size: 1.25rem;
   }
 }

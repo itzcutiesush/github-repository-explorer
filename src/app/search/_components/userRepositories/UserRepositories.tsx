@@ -32,13 +32,19 @@ export const UserRepositories = ({
 
   return (
     <div className={styles.panel}>
-      <div className={styles.list}>
+      <div>
         {repositories.map((repo) => (
           <div key={repo.id} className={styles.item}>
-            <Link href={repo.html_url} target="_blank">
+            <Link
+              href={repo.html_url}
+              className={styles.itemTitle}
+              target="_blank"
+            >
               <strong>{repo.name}</strong>
             </Link>
-            {repo.description && <p>{repo.description}</p>}
+            {repo.description && (
+              <p className={styles.itemDescription}>{repo.description}</p>
+            )}
             <div className={styles.stats}>
               <span>⭐ {repo.stargazers_count}</span>
               <span>🍴 {repo.forks_count}</span>

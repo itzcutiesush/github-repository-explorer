@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Button } from "@/ui/button/Button";
 import styles from "./SearchBar.module.scss";
 
@@ -21,6 +21,15 @@ export const SearchBar = ({
   const [searchTerm, setSearchTerm] = useState(initialSearchTerm || "");
   const router = useRouter();
   const searchParams = useSearchParams();
+  const debounceTimerRef = useRef<NodeJS.Timeout | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (debounceTimerRef.current) {
+        clearTimeout(debounceTimerRef.current);
+      }
+    };
+  }, []);
 
   const updateSearchParams = (key: string, value: string) => {
     const params = new URLSearchParams(searchParams.toString());
@@ -31,21 +40,37 @@ export const SearchBar = ({
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value;
     setSearchTerm(newValue);
-    //triggerSearch();
+
+    if (debounceTimerRef.current) {
+      clearTimeout(debounceTimerRef.current);
+    }
+
+    debounceTimerRef.current = setTimeout(() => {
+      triggerSearch(newValue);
+    }, 500);
   };
 
-  const triggerSearch = () => {
-    onChangeHandler(searchTerm);
-    updateSearchParams("q", searchTerm);
+  const triggerSearch = (searchTerm: string) => {
+    if (searchTerm.trim().length > 0) {
+      onChangeHandler(searchTerm);
+      updateSearchParams("q", searchTerm);
+    }
   };
 
   const searchButtonHandler = () => {
-    if (searchTerm.trim().length > 0) triggerSearch();
+    // Clear debounce timer and search immediately
+    if (debounceTimerRef.current) {
+      clearTimeout(debounceTimerRef.current);
+    }
+    triggerSearch(searchTerm);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
-      triggerSearch();
+      if (debounceTimerRef.current) {
+        clearTimeout(debounceTimerRef.current);
+      }
+      triggerSearch(searchTerm);
     }
   };
 

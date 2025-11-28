@@ -28,6 +28,12 @@ export const SearchClientContainer = ({ initialQuery }: SearchClientProps) => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  useEffect(() => {
+    if (initialQuery) {
+      getUserData(initialQuery);
+    }
+  }, [initialQuery]);
+
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
@@ -38,9 +44,9 @@ export const SearchClientContainer = ({ initialQuery }: SearchClientProps) => {
       return;
     }
 
-    if (searchTerm.trim().length <= 3) {
+    if (searchTerm.trim().length <= 2) {
       setUsers([]);
-      setError("Please enter a username with 4 character or more");
+      setError("Enter at least 3 characters to search");
       return;
     }
 
@@ -70,12 +76,6 @@ export const SearchClientContainer = ({ initialQuery }: SearchClientProps) => {
       setLoading(false);
     }
   };
-
-  useEffect(() => {
-    if (initialQuery) {
-      getUserData(initialQuery);
-    }
-  }, [initialQuery]);
 
   const onUserNameSearch = (userName: string) => {
     getUserData(userName);
