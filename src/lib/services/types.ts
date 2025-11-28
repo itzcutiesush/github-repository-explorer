@@ -31,13 +31,9 @@ export type UserSearchParams = {
 
 export type GitHubRepository = {
   id: number;
-  node_id: string;
   name: string;
-  full_name: string;
-  owner: GitHubUser;
   html_url: string;
   description: string | null;
-  url: string;
   stargazers_count: number;
   forks_count: number;
 };

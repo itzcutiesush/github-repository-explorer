@@ -9,14 +9,14 @@ type SearchBarProps = {
   initialSearchTerm: string;
   placeholderText: string;
   onChangeHandler: (searchTerm: string) => void;
-  loading: boolean;
+  isLoading: boolean;
 };
 
 export const SearchBar = ({
   initialSearchTerm,
   placeholderText,
   onChangeHandler,
-  loading,
+  isLoading,
 }: SearchBarProps) => {
   const [searchTerm, setSearchTerm] = useState(initialSearchTerm || "");
   const router = useRouter();
@@ -40,7 +40,13 @@ export const SearchBar = ({
   };
 
   const searchButtonHandler = () => {
-    triggerSearch();
+    if (searchTerm.trim().length > 0) triggerSearch();
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      triggerSearch();
+    }
   };
 
   return (
@@ -50,11 +56,12 @@ export const SearchBar = ({
         value={searchTerm}
         onChange={handleOnChange}
         placeholder={placeholderText}
+        onKeyDown={handleKeyDown}
         className={styles.input}
-        disabled={loading}
+        disabled={isLoading}
       />
-      <Button onClick={searchButtonHandler} disabled={loading}>
-        {loading ? "Searching..." : "Search"}
+      <Button onClick={searchButtonHandler} disabled={isLoading}>
+        {isLoading ? "Searching..." : "Search"}
       </Button>
     </>
   );

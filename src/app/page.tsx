@@ -8,7 +8,9 @@ export default function Home() {
       <main className={styles.main}>
         <h1 className={styles.title}>Github Repository Explorer</h1>
         <Button variant="primary" fullWidth>
-          <Link href="/search">Let&apos;s Go!</Link>
+          <Link href="/search" className={styles.link}>
+            Let&apos;s Go!
+          </Link>
         </Button>
       </main>
     </div>

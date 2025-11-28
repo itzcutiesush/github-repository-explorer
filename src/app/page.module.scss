@@ -16,13 +16,14 @@
   font-weight: 700;
   text-align: center;
   margin-bottom: 2rem;
-  background: linear-gradient(
-    135deg,
-    var(--primary) 0%,
-    var(--secondaryColor) 100%
-  );
+  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
   -webkit-text-fill-color: var(--primary);
   background-clip: text;
+}
+
+.link {
+  display: block;
+  width: 100%;
 }
 
 @media (min-width: 481px) {

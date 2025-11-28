@@ -20,7 +20,7 @@ describe("SearchBar", () => {
     initialSearchTerm: "",
     placeholderText: PLACEHOLDER_TEXT,
     onChangeHandler: vi.fn(),
-    loading: false,
+    isLoading: false,
   };
 
   beforeEach(() => {
@@ -48,7 +48,7 @@ describe("SearchBar", () => {
     expect(input.value).toBe("test");
   });
 
-  it("should trigger search when input has more than 3 characters", async () => {
+  it("should trigger search when input has more than 1 character", async () => {
     const onChangeHandler = vi.fn();
     render(<SearchBar {...defaultProps} onChangeHandler={onChangeHandler} />);
 
@@ -64,27 +64,28 @@ describe("SearchBar", () => {
     });
   });
 
-  it("should not trigger search when input has 3 or fewer characters", () => {
-    const onChangeHandler = vi.fn();
-    render(<SearchBar {...defaultProps} onChangeHandler={onChangeHandler} />);
-
-    const input = screen.getByPlaceholderText(PLACEHOLDER_TEXT);
-    const button = screen.getByRole("button", { name: /search/i });
-
-    fireEvent.change(input, { target: { value: "jo" } });
-    fireEvent.click(button);
-
-    expect(onChangeHandler).not.toHaveBeenCalled();
-    expect(mockPush).not.toHaveBeenCalled();
-  });
-
   it("should show loading state", () => {
-    render(<SearchBar {...defaultProps} loading={true} />);
+    render(<SearchBar {...defaultProps} isLoading={true} />);
 
     const button = screen.getByRole("button", { name: /searching/i });
     const input = screen.getByPlaceholderText(PLACEHOLDER_TEXT);
 
     expect(button).toBeDisabled();
     expect(input).toBeDisabled();
+  });
+
+  it("should trigger search on Enter key press", async () => {
+    const onChangeHandler = vi.fn();
+    render(<SearchBar {...defaultProps} onChangeHandler={onChangeHandler} />);
+
+    const input = screen.getByPlaceholderText("Enter a username to search");
+
+    fireEvent.change(input, { target: { value: "john" } });
+    fireEvent.keyDown(input, { key: "Enter", code: "Enter" });
+
+    await waitFor(() => {
+      expect(onChangeHandler).toHaveBeenCalledWith("john");
+      expect(mockPush).toHaveBeenCalledWith("/search?q=john");
+    });
   });
 });
